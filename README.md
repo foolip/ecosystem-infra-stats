@@ -9,10 +9,8 @@ This is intended to replace the
 
 ## Setup
 
-Up-to-date checkouts of
-[Chromium](https://www.chromium.org/developers/how-tos/get-the-code)
-and [web-platform-tests](https://github.com/web-platform-tests/wpt)
-are needed in `$HOME/chromium/src` and `$HOME/web-platform-tests`.
+An up-to-date checkout of [wpt](https://github.com/web-platform-tests/wpt) is
+needed in `$HOME/web-platform-tests/wpt`.
 
 The build script needs Python 2 and Virtualenv:
 ```bash

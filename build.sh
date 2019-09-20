@@ -3,7 +3,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-CHROMIUM_DIR="$HOME/chromium/src"
 WPT_DIR="$HOME/web-platform-tests/wpt"
 
 # put the output in a directory to match how it will be served:
@@ -34,35 +33,16 @@ git reset HEAD *.csv || true
 echo
 
 echo "fetching wpt PRs..."
-# note: the first argument isn't used, only passed
-python wpt-prs.py "$CHROMIUM_DIR" "$WPT_DIR"
-echo
-
-echo "chromium import stats..."
-python wpt-import-stats.py "$CHROMIUM_DIR" "$WPT_DIR"
-echo
-
-echo "chromium export stats..."
-python wpt-export-stats.py "$CHROMIUM_DIR"
+python wpt-prs.py "$WPT_DIR"
 echo
 
 echo "wpt.fyi stats..."
-# note: the first argument isn't used, only passed
-python wpt-dashboard-stats.py "$CHROMIUM_DIR" "$WPT_DIR"
+python wpt-dashboard-stats.py "$WPT_DIR"
 echo
 
 echo "upstream wpt commit stats..."
 # note: the first argument isn't used, only passed
-python wpt-commits.py "$CHROMIUM_DIR" "$WPT_DIR"
+python wpt-commits.py "$WPT_DIR"
 echo
 
 mv *.csv "$OUTDIR/"
-
-echo "chromium usage stats..."
-cp wpt_usage_stats.py "$CHROMIUM_DIR/third_party/blink/tools/"
-"$CHROMIUM_DIR/third_party/blink/tools/wpt_usage_stats.py" 2019-09-01 2019-10-01 > "$OUTDIR/chromium-usage-stats.txt"
-rm "$CHROMIUM_DIR/third_party/blink/tools/wpt_usage_stats.py"
-echo
-
-echo "chromium OWNERS check..."
-./chromium-wpt-owners.sh "$CHROMIUM_DIR/third_party/blink/web_tests/external/wpt" > "$OUTDIR/chromium-wpt-owners.txt"

@@ -25,11 +25,6 @@ QUARTER_START = '2019-07-01T00:00:00Z'
 PRS_FILE = 'wpt-prs.csv'
 
 try:
-    CHROMIUM_DIR = sys.argv[1]
-except IndexError:
-    CHROMIUM_DIR = os.path.expanduser('~/chromium/src')
-CHROMIUM_WPT_PATH = 'third_party/blink/web_tests/external/wpt'
-try:
     WPT_DIR = sys.argv[2]
 except IndexError:
     WPT_DIR = os.path.expanduser('~/github/web-platform-tests')
@@ -42,10 +37,6 @@ def git(args, cwd):
     return output.decode('utf-8').rstrip()
 
 
-def chromium_git(args):
-    return git(args, cwd=CHROMIUM_DIR)
-
-
 def wpt_git(args):
     return git(args, cwd=WPT_DIR)
 
@@ -55,10 +46,6 @@ def read_pr_db():
     pr_db.read()
     print('Read {} PRs from {}'.format(len(pr_db), PRS_FILE))
     return pr_db
-
-
-def is_export_pr(pr):
-    return bool(pr['chromium_commit'])
 
 
 def pr_number_from_tag(tagish):

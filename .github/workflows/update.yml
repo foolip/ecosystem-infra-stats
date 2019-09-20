@@ -1,0 +1,31 @@
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    # 06:45 UTC daily
+    - cron: '45 6 * * *'
+name: update
+jobs:
+  update:
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkout wpt
+      uses: actions/checkout@master
+      with:
+        repository: web-platform-tests/wpt
+        ref: master
+        fetch-depth: 1
+        path: web-platform-tests/wpt
+    - uses: actions/setup-python@v1
+      with:
+        python-version: 2.7
+    - run: pip install virtualenv
+    - run: ./build.sh
+    - uses: JamesIves/github-pages-deploy-action@2.0.1
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: out
